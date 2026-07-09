@@ -1,4 +1,3 @@
-
 const {
     Client,
     GatewayIntentBits,
@@ -8,12 +7,13 @@ const {
     EmbedBuilder,
 } = require('discord.js');
 
+// ⚠️ Remplace ces valeurs par les tiennes
 const TOKEN = process.env.DISCORD_TOKEN;
 const SALON_NOTATION_ID = '1522641516689100921'; // clic droit sur le salon > Copier l'identifiant
 
-
-// Regex simple pour détecter un lien (http/https) 
-const REGEX_LIEN = /(https?:\/\/[^\s]+)/i;
+// Détecte un lien provenant uniquement des plateformes autorisées :
+// YouTube, YouTube Music, Spotify, Twitter/X, Amazon Music, Deezer, Apple Music
+const REGEX_LIEN = /https?:\/\/(?:(?:www\.|music\.|m\.)?youtube\.com|youtu\.be|(?:open\.)?spotify\.com|(?:www\.)?(?:twitter\.com|x\.com)|music\.amazon\.(?:com|fr|de|co\.uk|it|es|ca|com\.br|co\.jp|in|com\.au|com\.mx)|(?:www\.)?deezer\.com|music\.apple\.com)(?:\/\S*)?/i
 
 // Stockage en mémoire des votes : Map<messageId, Map<userId, note>>
 const votes = new Map();
@@ -128,5 +128,4 @@ client.on('interactionCreate', async (interaction) => {
     await interaction.update({ embeds: [embed] });
 });
 
-console.log('Variables env disponibles :', JSON.stringify(Object.keys(process.env).filter(k => k.toUpperCase().includes('TOKEN') || k.toUpperCase().includes('DISCORD'))));
 client.login(TOKEN);
