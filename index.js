@@ -15,6 +15,21 @@ const SALON_NOTATION_ID = '1522641516689100921'; // clic droit sur le salon > Co
 // YouTube, YouTube Music, Spotify, Twitter/X, Amazon Music, Deezer, Apple Music
 const REGEX_LIEN = /https?:\/\/(?:(?:www\.|music\.|m\.)?youtube\.com|youtu\.be|(?:open\.)?spotify\.com|(?:www\.)?(?:twitter\.com|x\.com)|music\.amazon\.(?:com|fr|de|co\.uk|it|es|ca|com\.br|co\.jp|in|com\.au|com\.mx)|(?:www\.)?deezer\.com|music\.apple\.com)(?:\/\S*)?/i
 
+// Extensions de fichiers audio acceptées pour un upload direct (sans lien)
+const EXTENSIONS_AUDIO = ['.mp3', '.wav', '.flac', '.ogg', '.m4a', '.aac', '.wma', '.opus'];
+
+// Vérifie si une pièce jointe est un fichier audio (par type MIME ou extension)
+function estFichierAudio(piece) {
+    if (piece.contentType && piece.contentType.startsWith('audio/')) return true;
+    const nom = piece.name?.toLowerCase() || '';
+    return EXTENSIONS_AUDIO.some((ext) => nom.endsWith(ext));
+}
+
+// Vérifie si le message contient au moins une pièce jointe audio
+function contientFichierAudio(message) {
+    return message.attachments.some(estFichierAudio);
+}
+
 // Stockage en mémoire des votes : Map<messageId, Map<userId, note>>
 const votes = new Map();
 
@@ -85,7 +100,7 @@ function construireEmbed(messageId) {
 client.on('messageCreate', async (message) => {
     if (message.author.bot) return;
     if (message.channel.id !== SALON_NOTATION_ID) return;
-    if (!REGEX_LIEN.test(message.content)) return;
+    if (!REGEX_LIEN.test(message.content) && !contientFichierAudio(message)) return;
 
     try {
         votes.set(message.id, new Map());
