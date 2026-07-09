@@ -128,6 +128,5 @@ client.on('interactionCreate', async (interaction) => {
     await interaction.update({ embeds: [embed] });
 });
 
-client.login(TOKEN);
-console.log('Token chargé ?', TOKEN ? `oui, ${TOKEN.length} caractères, commence par "${TOKEN.slice(0, 8)}..."` : 'NON — undefined ou vide');
+console.log('Variables env disponibles :', JSON.stringify(Object.keys(process.env).filter(k => k.toUpperCase().includes('TOKEN') || k.toUpperCase().includes('DISCORD'))));
 client.login(TOKEN);
