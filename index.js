@@ -12,7 +12,7 @@ const TOKEN = process.env.DISCORD_TOKEN;
 const SALON_NOTATION_ID = '1522641516689100921'; // clic droit sur le salon > Copier l'identifiant
 
 
-// Regex simple pour détecter un lien (http/https)
+// Regex simple pour détecter un lien (http/https) 
 const REGEX_LIEN = /(https?:\/\/[^\s]+)/i;
 
 // Stockage en mémoire des votes : Map<messageId, Map<userId, note>>
