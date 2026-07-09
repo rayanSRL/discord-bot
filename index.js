@@ -129,3 +129,5 @@ client.on('interactionCreate', async (interaction) => {
 });
 
 client.login(TOKEN);
+console.log('Token chargé ?', TOKEN ? `oui, ${TOKEN.length} caractères, commence par "${TOKEN.slice(0, 8)}..."` : 'NON — undefined ou vide');
+client.login(TOKEN);
